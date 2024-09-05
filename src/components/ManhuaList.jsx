@@ -1,49 +1,21 @@
 
-/* eslint-disable react/prop-types */
 
-import { useState, useEffect, useContext } from 'react';
+
+import { useState, useContext } from 'react';
 import { set, omit } from 'lodash-es';
 import { Manhua } from './Manhua';
 import { NewTitle } from './NewTitle';
-import { getData, setData, DataContext, slugify } from '../helpers';
+import { DataContext, slugify } from '../helpers';
 
-let resource;
-export const ManhuaList = ({reset = false, onResetDone}) => {
+export const ManhuaList = () => {
   const [ filter, setFilter ] = useState('');
-  const { gistId, filename, token } = useContext(DataContext);
-  const [ database, setDatabase ] = useState(resource?.read())
-
-  if(!resource && gistId && filename) {
-    resource = getData(gistId, filename);
-  }
-  useEffect(() => {
-    return () => {
-      resource = null
-    }
-}, [])
-
-  useEffect(() => {
-    if (reset) {
-      resource = null;
-      onResetDone();
-    } else {
-      setDatabase(resource?.read())
-    }
-  }, [reset, onResetDone])
-
-  const onSuccess = (req) => {
-    setDatabase(req)
-  }
-
-  const onError = (err) => {
-    console.log(err)
-  }
+  const { database, setter } = useContext(DataContext);
 
   const list =  Object.keys(database || {})
 
   return (
     <>
-    <NewTitle onSubmit={(title) => {
+    <NewTitle onSubmit={async (title) => {
        const data = {
         ...database,
         [slugify(title)]: {
@@ -52,7 +24,7 @@ export const ManhuaList = ({reset = false, onResetDone}) => {
           active: true,
         }
       };
-       setData(data, gistId, filename, token).then(onSuccess, onError);
+      await setter(data);
       }}
       size={list.length}
     />
@@ -81,28 +53,28 @@ export const ManhuaList = ({reset = false, onResetDone}) => {
               name={name}
               chapter={chapter}
               active={active}
-              onCounterClick={() => {
+              onCounterClick={async () => {
                 if (active) {
                   const data = {...database};
                   set(data, [slug, 'chapter'],  parseInt(chapter, 10) + 1);
-                  setData(data, gistId, filename, token).then(onSuccess, onError);
+                  await setter(data);
                 }
               }}
-              onSetAcive={() => {
+              onSetAcive={async () => {
                 const data = {...database};
                 set(data, [slug, 'active'], !active);
-                setData(data, gistId, filename, token).then(onSuccess, onError);
+                await setter(data);
               }}
-              onUpdateChapter={(newChapter) => {
+              onUpdateChapter={async (newChapter) => {
                 if (active) {
                   const data = {...database};
                   set(data, [slug, 'chapter'], parseInt(newChapter, 10));
-                  setData(data, gistId, filename, token).then(onSuccess, onError);
+                  await setter(data);
                 }
               }}
-              onRemove={() => {
+              onRemove={ async() => {
                 const data = omit(database, [slug]);
-                setData(data, gistId, filename, token).then(onSuccess, onError);
+                await setter(data);
               }}
             />
           )

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .popup {
-  min-width: 340px;
-  height: 440px;
+  width: 400px;
+  height: 540px;
 }
 
 /* width */
@@ -14,7 +14,7 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #fdfdf4;
+  background: #06080E;
 }
 
 /* Handle */
