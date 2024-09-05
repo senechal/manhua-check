@@ -1,6 +1,6 @@
 
 import { useState, useEffect, Suspense } from 'react';
-import { NewTitle } from './components/NewTitle';
+
 import { ManhuaList } from './components/ManhuaList';
 import { GistSettings } from './components/GistSettings';
 import { DataContext } from './helpers';
@@ -10,37 +10,36 @@ import  {
 } from '@heroicons/react/20/solid'
 
 
-const database = {
-    'the-beginning-after-the-end': {
-      name: 'The Beginning After the End',
-      chapter: 125,
-      active: false,
-    },
-    'solo-leveling': {
-      name: 'Solo Leveling',
-      chapter: 150,
-      active: true,
-    },
-    'adventures-of-sinbad': {
-      name: 'Adventures of Sinbad',
-      chapter: 100,
-      active: true,
-    },
-    'my-wife-is-a-demon-queen': {
-      name: 'My Wife is a Demon Queen',
-      chapter: 75,
-      active: true,
-    },
-    'the-gamer': {
-      name: 'The Gamer',
-      chapter: 200,
-      active: true,
-    }
-  };
-
+// const database = {
+//     'the-beginning-after-the-end': {
+//       name: 'The Beginning After the End',
+//       chapter: 125,
+//       active: false,
+//     },
+//     'solo-leveling': {
+//       name: 'Solo Leveling',
+//       chapter: 150,
+//       active: true,
+//     },
+//     'adventures-of-sinbad': {
+//       name: 'Adventures of Sinbad',
+//       chapter: 100,
+//       active: true,
+//     },
+//     'my-wife-is-a-demon-queen': {
+//       name: 'My Wife is a Demon Queen',
+//       chapter: 75,
+//       active: true,
+//     },
+//     'the-gamer': {
+//       name: 'The Gamer',
+//       chapter: 200,
+//       active: true,
+//     }
+//   };
 
 function App() {
-  const [ settings, setSettings ] = useState(false);
+  const [settings, setSettings ] = useState(false);
   const [context, setContext] = useState({});
   const [resetList, setResetList] = useState(false);
 
@@ -48,8 +47,10 @@ function App() {
     const token = localStorage.getItem("token");
     const gistId = localStorage.getItem("gistId");
     const filename = localStorage.getItem("filename");
-    setContext({token, gistId, filename})
-  }, [])
+    setContext((state) => {return {...state, token, gistId, filename}})
+  }, []);
+
+
   return (
     <DataContext.Provider value={context}>
       <div className="popup font-lexend">
@@ -62,13 +63,17 @@ function App() {
                   <Cog className='size-6 text-white cursor-pointer' onClick={() => setSettings(state => !state)} />
                 </div>
                 <GistSettings open={settings} onSubmit={() => {
-                  setSettings(false);
-                  setResetList(true);
+                    const token = localStorage.getItem("token");
+                    const gistId = localStorage.getItem("gistId");
+                    const filename = localStorage.getItem("filename");
+                    setContext({token, gistId, filename})
+                    setSettings(false);
+                    setResetList(true);
                   }}
                  />
-                <NewTitle />
+
                 <Suspense fallback={<div>Loading...</div>}>
-                  <ManhuaList database={database} reset={resetList} onResetDone={() => setResetList(false)}/>
+                  <ManhuaList reset={resetList} onResetDone={() => setResetList(false)}/>
                 </Suspense>
               </div>
             </div>

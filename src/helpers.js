@@ -1,7 +1,3 @@
-const TOKEN = "YOUR_PERSONAL_ACCESS_TOKEN";
-const GIST_ID = "YOUR_GIST_ID";
-const GIST_FILENAME = "db.json";
-
 import { createContext } from 'react';
 
 
@@ -55,20 +51,26 @@ export function getData(gistId, filename) {
 /*
  * Puts the data you want to store back into the gist
  */
-export async function setData(data) {
-  const req = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+export async function setData(data, gistId, filename, token) {
+  return fetch(`https://api.github.com/gists/${gistId}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       files: {
-        [GIST_FILENAME]: {
+        [filename]: {
           content: JSON.stringify(data),
         },
       },
     }),
+  }).then(async (req) => {
+    const gist = await req.json();
+    return JSON.parse(gist?.files?.[filename]?.content || '{}');
   });
+}
 
-  return req.json();
+
+export const slugify  = (str) => {
+  return str.split(' ').map(i => i.toLowerCase()).join('-')
 }

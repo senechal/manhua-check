@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import  {
   PlusIcon as Plus,
   PencilSquareIcon as Edit,
@@ -7,18 +7,44 @@ import  {
   XCircleIcon as False,
   ArrowTurnDownLeftIcon as Enter,
   TrashIcon as Trash,
+  ArrowPathIcon as Spinner,
 } from '@heroicons/react/20/solid'
 
 const validateNumber = (str, fallback) => {
   return str.match(/^\d+$/gm) ? str : fallback
 }
 
-export const Manhua = ({name,chapter, active }) => {
-  const [ edit, setEdit ] = useState(false);
+export const Manhua = (props) => {
+  const {
+    name,
+    chapter,
+    active,
+    onCounterClick,
+    onSetAcive,
+    onUpdateChapter,
+    onRemove,
+  } = props;
+  const [edit, setEdit ] = useState(false);
+  const [loading, setLoading] = useState({
+    counter: false,
+    chapter: false,
+    active: false,
+    remove: false,
+  });
   const [chapterInput, setChapterInput] = useState(chapter || "")
 
+  useEffect(() => {
+    setLoading(false);
+    setChapterInput(chapter)
+  }, [chapter])
+
+  useEffect(() => {
+    setLoading(false);
+  }, [name, active])
+
   return (
-    <>
+    <div className='relative'>
+     {/* {loading ? <div className="bg-white absolute top-0 left-0 h-full w-full opacity-30 rounded" /> : null } */}
       <div className="flex items-start gap-4 px-4 py-2 pt-2 justify-between">
         <div className="flex flex-col justify-center">
           <div className="flex items-center">
@@ -32,8 +58,19 @@ export const Manhua = ({name,chapter, active }) => {
         <div className="shrink-0">
           <button
             className="flex min-w-[32px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-8 px-2 bg-[#153645] text-white text-sm font-medium leading-normal w-fit"
+            onClick={(e) => {
+              setLoading((state) => ({...state, counter: true}));
+              onCounterClick(e);
+            }}
           >
-            <span className="truncate"><Plus className='size-3 text-white'/></span>
+            <span className="truncate">
+              {
+                loading.counter
+                  ? <Spinner className='animate-spin size-3 text-white'/>
+                  : <Plus className='size-3 text-white'/>
+              }
+
+            </span>
           </button>
         </div>
       </div>
@@ -52,20 +89,56 @@ export const Manhua = ({name,chapter, active }) => {
               </label>
               <button
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-4 bg-[#e1e243] text-[#0f1a24] gap-2 pl-4 text-sm font-bold leading-normal tracking-[0.015em]"
+                onClick={() => {
+                  setLoading((state) => ({...state, chapter: true}));
+                  onUpdateChapter(chapterInput)
+                }}
               >
-                <Enter className='size-6 text-[#0f1a24] cursor-pointer'/>
+                 {
+                    loading.chapter
+                      ? <Spinner className='animate-spin size-6 text-[#0f1a24] cursor-pointer'/>
+                      : <Enter className='size-6 text-[#0f1a24] cursor-pointer'/>
+                  }
+
               </button>
             </div>
             <p className="flex items-center text-white text-sm font-normal leading-normal line-clamp-2">
-              Active {active ? <True className='size-6 text-[#e1e243] ml-4 cursor-pointer' /> : <False className='size-6 text-[#e1e243] ml-4 cursor-pointer' />}
+              Active {
+                active
+                  ? <True
+                      className='size-6 text-[#e1e243] ml-4 cursor-pointer'
+                      onClick={(e) => {
+                        setLoading((state) => ({...state, active: true}));
+                        onSetAcive(e);
+                      }}
+                    />
+                  : <False
+                      className='size-6 text-[#e1e243] ml-4 cursor-pointer'
+                      onClick={(e) => {
+                        setLoading((state) => ({...state, active: true}));
+                        onSetAcive(e);
+                      }}
+                    />
+                }
             </p>
             <p className="flex items-center text-white text-sm font-normal leading-normal line-clamp-2">
-              Remove? <Trash className='size-6 text-[#e1e243] ml-4 cursor-pointer' />
+              Remove ?
+              {
+                    loading.remove
+                      ? <Spinner className='animate-spin size-6 text-[#e1e243] ml-4 cursor-pointer'/>
+                      : <Trash
+                          className='size-6 text-[#e1e243] ml-4 cursor-pointer'
+                          onClick={(e) => {
+                            setLoading((state) => ({...state, remove: true}));
+                            onRemove(e);
+                          }}
+                        />
+              }
             </p>
-            <hr className='border-gray-800 dark:border-white'/>
+            <hr className='border-gray-800 dark:border-white mb-2'/>
           </div>
         ) : null
       }
-   </>
+   </div>
   )
 }

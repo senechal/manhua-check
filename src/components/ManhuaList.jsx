@@ -2,17 +2,18 @@
 /* eslint-disable react/prop-types */
 
 import { useState, useEffect, useContext } from 'react';
-import { set } from 'lodash-es';
+import { set, omit } from 'lodash-es';
 import { Manhua } from './Manhua';
-import {getData, DataContext} from '../helpers';
+import { NewTitle } from './NewTitle';
+import { getData, setData, DataContext, slugify } from '../helpers';
 
 let resource;
 export const ManhuaList = ({reset = false, onResetDone}) => {
   const [ filter, setFilter ] = useState('');
-  const { gistId, filename } = useContext(DataContext);
+  const { gistId, filename, token } = useContext(DataContext);
+  const [ database, setDatabase ] = useState(resource?.read())
 
   if(!resource && gistId && filename) {
-    console.log(resource, gistId, filename)
     resource = getData(gistId, filename);
   }
   useEffect(() => {
@@ -25,13 +26,36 @@ export const ManhuaList = ({reset = false, onResetDone}) => {
     if (reset) {
       resource = null;
       onResetDone();
+    } else {
+      setDatabase(resource?.read())
     }
   }, [reset, onResetDone])
 
-  const database = resource?.read() || {};
+  const onSuccess = (req) => {
+    setDatabase(req)
+  }
+
+  const onError = (err) => {
+    console.log(err)
+  }
+
+  const list =  Object.keys(database || {})
 
   return (
     <>
+    <NewTitle onSubmit={(title) => {
+       const data = {
+        ...database,
+        [slugify(title)]: {
+          name: title,
+          chapter: 0,
+          active: true,
+        }
+      };
+       setData(data, gistId, filename, token).then(onSuccess, onError);
+      }}
+      size={list.length}
+    />
     <div className="flex items-center px-4 py-3 justify-end">
       <label className="flex flex-col min-w-40 flex-1">
           <input
@@ -44,7 +68,7 @@ export const ManhuaList = ({reset = false, onResetDone}) => {
       </div>
       <div>
       {
-        Object.keys(database || {}).filter(slug => {
+        list.filter(slug => {
           const { name } = database[slug];
           return name.toLowerCase().includes(filter.toLowerCase())
 
@@ -58,9 +82,27 @@ export const ManhuaList = ({reset = false, onResetDone}) => {
               chapter={chapter}
               active={active}
               onCounterClick={() => {
+                if (active) {
+                  const data = {...database};
+                  set(data, [slug, 'chapter'],  parseInt(chapter, 10) + 1);
+                  setData(data, gistId, filename, token).then(onSuccess, onError);
+                }
+              }}
+              onSetAcive={() => {
                 const data = {...database};
-                set(data, [slug, 'chapter'], chapter + 1)
-
+                set(data, [slug, 'active'], !active);
+                setData(data, gistId, filename, token).then(onSuccess, onError);
+              }}
+              onUpdateChapter={(newChapter) => {
+                if (active) {
+                  const data = {...database};
+                  set(data, [slug, 'chapter'], parseInt(newChapter, 10));
+                  setData(data, gistId, filename, token).then(onSuccess, onError);
+                }
+              }}
+              onRemove={() => {
+                const data = omit(database, [slug]);
+                setData(data, gistId, filename, token).then(onSuccess, onError);
               }}
             />
           )
