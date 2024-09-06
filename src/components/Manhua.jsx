@@ -79,7 +79,7 @@ export const Manhua = (props) => {
             <p title={name} className={`cursor-default text-white text-base font-medium leading-normal line-clamp-1 pr-4 ${active ? '' : 'line-through'}`}>{name}</p>
             <Edit className='size-5 text-white cursor-pointer' onClick={() => setEdit(state => !state)} />
           </div>
-          <p className="text-[#e1e243] text-sm font-normal leading-normal line-clamp-2">Chapter {active ? chapter : '?'}</p>
+          <p className="text-[#e1e243] cursor-default text-sm font-normal leading-normal line-clamp-2">Chapter {active ? chapter : '?'}</p>
 
 
         </div>
