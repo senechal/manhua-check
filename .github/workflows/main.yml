@@ -31,7 +31,7 @@ jobs:
       - name: Zip Build
         uses: thedoctor0/zip-release@0.7.5
         with:
-          type: .zip
+          type: 'zip'
           filename: release.zip
           directory: ./build
       - name: Upload Release
