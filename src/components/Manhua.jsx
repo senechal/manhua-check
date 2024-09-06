@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/20/solid'
 
 const validateNumber = (str, fallback) => {
-  return str.match(/^\d+$/gm) ? str : fallback
+  return str.match(/^\d+$/gm) || str === "" ? str : fallback
 }
 
 
@@ -58,6 +58,19 @@ export const Manhua = (props) => {
     setLoading(false);
   }, [name, active]);
 
+  const submitHandler = () => {
+    if(active && chapter !== chapterInput && chapterInput !== "") {
+      setLoading((state) => ({ ...state, chapter: true }));
+      onUpdateChapter(chapterInput)
+    }
+  }
+
+  const handleEnter = (e) => {
+    if (e.keyCode === 13 || e.which === 13) {
+      submitHandler()
+    }
+  }
+
   return (
     <div className='relative'>
       <div className="flex items-start gap-4 px-4 py-2 pt-2 justify-between">
@@ -100,16 +113,13 @@ export const Manhua = (props) => {
                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#153645] focus:border-none h-10 placeholder:text-white p-4 text-base font-normal leading-normal"
                   value={chapterInput}
                   onChange={({ target }) => setChapterInput((state) => validateNumber(target.value, state))}
+                  onKeyPress={handleEnter}
                 />
               </label>
               <button
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-4 bg-[#e1e243] text-[#0f1a24] gap-2 pl-4 text-sm font-bold leading-normal tracking-[0.015em]"
-                onClick={() => {
-                  if(active && chapter !== chapterInput) {
-                    setLoading((state) => ({ ...state, chapter: true }));
-                    onUpdateChapter(chapterInput)
-                  }
-                }}
+                disabled={chapter === chapterInput || chapterInput === ""}
+                className="disabled:bg-slate-200 disabled:cursor-not-allowed flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-4 bg-[#e1e243] text-[#0f1a24] gap-2 pl-4 text-sm font-bold leading-normal tracking-[0.015em]"
+                onClick={submitHandler}
               >
                 {
                   loading.chapter
