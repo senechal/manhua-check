@@ -76,7 +76,7 @@ export const Manhua = (props) => {
       <div className="flex items-start gap-4 px-4 py-2 pt-2 justify-between">
         <div className="flex flex-col justify-center">
           <div className="flex items-center">
-            <p className={`text-white text-base font-medium leading-normal line-clamp-1 pr-4 ${active ? '' : 'line-through'}`}>{name}</p>
+            <p title={name} className={`cursor-default text-white text-base font-medium leading-normal line-clamp-1 pr-4 ${active ? '' : 'line-through'}`}>{name}</p>
             <Edit className='size-5 text-white cursor-pointer' onClick={() => setEdit(state => !state)} />
           </div>
           <p className="text-[#e1e243] text-sm font-normal leading-normal line-clamp-2">Chapter {active ? chapter : '?'}</p>
