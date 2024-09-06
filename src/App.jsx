@@ -26,6 +26,7 @@ function App() {
     const gistId = localStorage.getItem("gistId");
     const filename = localStorage.getItem("filename");
     const setter = gistSetter(gistId, filename, token, setDatabase);
+    setLoading(true)
     getData(gistId, filename).then(data => {
       setDatabase(data);
       setLoading(false);
