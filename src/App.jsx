@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/20/solid'
 
 function App() {
-  const [settings, setSettings] = useState(true);
+  const [settings, setSettings] = useState(false);
   const [database, setDatabase] = useState({});
   const [loading, setLoading] = useState(false);
   const [context, setContext] = useState({});
