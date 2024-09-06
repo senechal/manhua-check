@@ -35,6 +35,12 @@ jobs:
         run: npm ci
       - name: Build extension
         run: npm run build
+      - name: Update manifest.json version
+        uses: jossef/action-set-json-file@v2.1
+        with:
+          file: ./build/manifest.json
+          field: version
+          value: ${{ steps.tag_version.outputs.new_tag }}
       - name: Zip Build
         uses: thedoctor0/zip-release@0.7.5
         with:
