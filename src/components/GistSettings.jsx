@@ -3,9 +3,9 @@ import { useState } from "react"
 
 export const GistSettings = ({open, onSubmit}) => {
 
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [gistId, setGistId] = useState(localStorage.getItem("gistId"));
-  const [filename, setFilename] = useState(localStorage.getItem("filename"));
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [gistId, setGistId] = useState(localStorage.getItem("gistId") || "");
+  const [filename, setFilename] = useState(localStorage.getItem("filename") || "");
   return open ?(
     <div className='flex flex-col gap-4 px-4 justify-end'>
     <hr className='border-gray-800 dark:border-white'/>
