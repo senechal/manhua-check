@@ -1,7 +1,5 @@
 import { createContext } from 'react';
 
-
-
 export const DataContext = createContext(null);
 /*
  * Reads the JSON file inside of the gist
@@ -10,7 +8,7 @@ export const DataContext = createContext(null);
 export const getData = async (gistId, filename) =>  {
   const req = await fetch(`https://api.github.com/gists/${gistId}`);
   const gist = await req.json();
-  return JSON.parse(gist.files[filename].content);
+  return JSON.parse(gist?.files?.[filename]?.content ||'{}');
 }
 
 /*
@@ -32,7 +30,7 @@ export const setData = async (data, gistId, filename, token) => {
   });
 
   const gist = await req.json();
-  return JSON.parse(gist.files[filename].content);
+  return JSON.parse(gist?.files?.[filename]?.content ||'{}');
 }
 
 
