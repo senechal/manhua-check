@@ -31,16 +31,15 @@ jobs:
       - name: Build extension
         run: npm run build
       - name: Get version
-        id: get_version
         run: |
-          TAG=${{ steps.tag_version.outputs.new_tag }}
-          run: echo ::set-output name=VERSION::$(echo ${TAG#v})
+             TAG=${{ steps.tag_version.outputs.new_tag }}
+             echo "VERSION=${TAG#v}" >> $GITHUB_ENV
       - name: Update manifest.json version
         uses: jossef/action-set-json-field@v2.1
         with:
           file: ./build/manifest.json
           field: version
-          value: ${{ steps.get_version.outputs.VERSION }}
+          value: ${VERSION}
       - name: Zip Build
         uses: thedoctor0/zip-release@0.7.5
         with:
