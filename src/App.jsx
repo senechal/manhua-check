@@ -51,7 +51,7 @@ function App() {
                   <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Manhua Check</p>
                   {
                     !loading
-                      ? <Cog className='size-6 text-white cursor-pointer' onClick={() => setSettings(state => !state)} />
+                      ? <Cog className='hover:text-[#e1e243] size-6 text-white cursor-pointer' onClick={() => setSettings(state => !state)} />
                       : <Spinner className='animate-spin size-6 text-white cursor-pointer' />
                   }
                 </div>

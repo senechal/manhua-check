@@ -20,11 +20,11 @@ const Active = ({ active, loading, onClick }) => {
   if (loading) return <Spinner className='animate-spin size-6 text-[#e1e243] ml-4' />
   return active
     ? <True
-      className='size-6 text-[#e1e243] ml-4 cursor-pointer'
+      className='hover:text-[#a5a51a] size-6 text-[#e1e243] ml-4 cursor-pointer'
       onClick={onClick}
     />
     : <False
-      className='size-6 text-[#e1e243] ml-4 cursor-pointer'
+      className='hover:text-[#a5a51a] size-6 text-[#e1e243] ml-4 cursor-pointer'
       onClick={onClick}
     />
 
@@ -77,7 +77,7 @@ export const Manhua = (props) => {
         <div className="flex flex-col justify-center">
           <div className="flex items-center">
             <p title={name} className={`cursor-default text-white text-base font-medium leading-normal line-clamp-1 pr-4 ${active ? '' : 'line-through'}`}>{name}</p>
-            <Edit className='size-5 text-white cursor-pointer' onClick={() => setEdit(state => !state)} />
+            <Edit className='size-5 text-white cursor-pointer hover:text-[#e1e243]' onClick={() => setEdit(state => !state)} />
           </div>
           <p className="text-[#e1e243] cursor-default text-sm font-normal leading-normal line-clamp-2">Chapter {active ? chapter : '?'}</p>
 
@@ -85,7 +85,7 @@ export const Manhua = (props) => {
         </div>
         <div className="shrink-0">
           <button
-            className="flex min-w-[32px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-8 px-2 bg-[#153645] text-white text-sm font-medium leading-normal w-fit"
+            className="flex min-w-[32px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-8 px-2 bg-[#153645] hover:bg-[#2d7393] text-white text-sm font-medium leading-normal w-fit"
             onClick={(e) => {
               setLoading((state) => ({ ...state, counter: true }));
               onCounterClick(e);
@@ -118,7 +118,7 @@ export const Manhua = (props) => {
               </label>
               <button
                 disabled={chapter === chapterInput || chapterInput === ""}
-                className="disabled:bg-slate-200 disabled:cursor-not-allowed flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-4 bg-[#e1e243] text-[#0f1a24] gap-2 pl-4 text-sm font-bold leading-normal tracking-[0.015em]"
+                className="disabled:bg-slate-200 disabled:cursor-not-allowed flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-4 bg-[#e1e243] hover:bg-[#a5a51a] text-[#0f1a24] gap-2 pl-4 text-sm font-bold leading-normal tracking-[0.015em]"
                 onClick={submitHandler}
               >
                 {
@@ -141,7 +141,7 @@ export const Manhua = (props) => {
                 loading.remove
                   ? <Spinner className='animate-spin size-6 text-[#e1e243] ml-4' />
                   : <Trash
-                    className='size-6 text-[#e1e243] ml-4 cursor-pointer'
+                    className='hover:text-[#a5a51a] size-6 text-[#e1e243] ml-4 cursor-pointer'
                     onClick={(e) => {
                       setLoading((state) => ({ ...state, remove: true }));
                       onRemove(e);
