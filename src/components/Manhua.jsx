@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
+import { useIntl } from '../hooks/useIntl';
 import {
   PlusIcon as Plus,
   PencilSquareIcon as Edit,
@@ -16,7 +17,6 @@ const validateNumber = (str, fallback) => {
 
 
 const Active = ({ active, loading, onClick }) => {
-
   if (loading) return <Spinner className='animate-spin size-6 text-[#e1e243] ml-4' />
   return active
     ? <True
@@ -40,6 +40,8 @@ export const Manhua = (props) => {
     onUpdateChapter,
     onRemove,
   } = props;
+  const { getMessage } = useIntl();
+
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState({
     counter: false,
@@ -79,7 +81,7 @@ export const Manhua = (props) => {
             <p title={name} className={`cursor-default text-white text-base font-medium leading-normal line-clamp-1 pr-4 ${active ? '' : 'line-through'}`}>{name}</p>
             <Edit className='size-5 text-white cursor-pointer hover:text-[#e1e243]' onClick={() => setEdit(state => !state)} />
           </div>
-          <p className="text-[#e1e243] cursor-default text-sm font-normal leading-normal line-clamp-2">Chapter {active ? chapter : '?'}</p>
+          <p className="text-[#e1e243] cursor-default text-sm font-normal leading-normal line-clamp-2">{getMessage('CHAPTER')} {active ? chapter : '?'}</p>
 
 
         </div>
@@ -109,11 +111,11 @@ export const Manhua = (props) => {
             <div className="flex items-center justify-end">
               <label className="flex flex-col min-w-40 flex-1 pr-4">
                 <input
-                  placeholder="Chapter"
+                  placeholder={getMessage('CHAPTER')}
                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#153645] focus:border-none h-10 placeholder:text-white p-4 text-base font-normal leading-normal"
                   value={chapterInput}
                   onChange={({ target }) => setChapterInput((state) => validateNumber(target.value, state))}
-                  onKeyPress={handleEnter}
+                  onKeyDown={handleEnter}
                 />
               </label>
               <button
@@ -130,13 +132,13 @@ export const Manhua = (props) => {
               </button>
             </div>
             <p className="flex items-center text-white text-sm font-normal leading-normal line-clamp-2">
-              Active <Active active={active} loading={loading.active} onClick={(e) => {
+              {getMessage('ACTIVE')} <Active active={active} loading={loading.active} onClick={(e) => {
                 setLoading((state) => ({ ...state, active: true }));
                 onSetAcive(e);
               }} />
             </p>
             <p className="flex items-center text-white text-sm font-normal leading-normal line-clamp-2">
-              Remove ?
+              {getMessage('REMOVE')}
               {
                 loading.remove
                   ? <Spinner className='animate-spin size-6 text-[#e1e243] ml-4' />

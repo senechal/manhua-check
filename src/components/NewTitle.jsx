@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
+import { useIntl } from '../hooks/useIntl';
 import  { PlusIcon as Plus } from '@heroicons/react/20/solid'
 import  { ArrowPathIcon as Spinner } from '@heroicons/react/20/solid'
 
 export const NewTitle = ({ onSubmit, size }) => {
+  const { getMessage } = useIntl();
+
   const [ title, setTitle ] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +19,7 @@ export const NewTitle = ({ onSubmit, size }) => {
     <div className="flex items-center px-4 py-3 justify-end">
     <label className="flex flex-col min-w-40 flex-1 pr-4">
       <input
-        placeholder="New Title"
+        placeholder={getMessage('NEW_TITLE')}
         className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#153645] focus:border-none h-13 placeholder:text-white p-4 text-base font-normal leading-normal"
         value={title}
         onChange={({target}) => setTitle(target.value)}
@@ -34,7 +37,7 @@ export const NewTitle = ({ onSubmit, size }) => {
           ? <Spinner className='animate-spin size-6 text-[#0f1a24]'/>
           : <Plus className='size-6 text-[#0f1a24]'/>
       }
-      <span className="truncate">Add New</span>
+      <span className="truncate">{getMessage('ADD_NEW')}</span>
     </button>
   </div>
   )

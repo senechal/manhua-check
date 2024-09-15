@@ -2,12 +2,15 @@
 
 
 import { useState, useContext } from 'react';
+import { useIntl } from '../hooks/useIntl';
 import { set, omit } from 'lodash-es';
 import { Manhua } from './Manhua';
 import { NewTitle } from './NewTitle';
 import { DataContext, slugify } from '../helpers';
 
 export const ManhuaList = () => {
+  const { getMessage } = useIntl();
+
   const [ filter, setFilter ] = useState('');
   const { database, setter } = useContext(DataContext);
 
@@ -31,7 +34,7 @@ export const ManhuaList = () => {
     <div className="flex items-center px-4 py-3 justify-end">
       <label className="flex flex-col min-w-40 flex-1">
           <input
-            placeholder="Search"
+            placeholder={getMessage('SEARCH')}
             className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#153645] focus:border-none h-13 placeholder:text-white p-4 text-base font-normal leading-normal"
             value={filter}
             onChange={({target}) => setFilter(target.value)}
