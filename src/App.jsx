@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ManhuaList } from './components/ManhuaList';
 import { GistSettings } from './components/GistSettings';
 import { DataContext, setData, getData } from './helpers';
+import { useIntl } from './hooks/useIntl';
 
 import {
   Cog6ToothIcon as Cog,
@@ -15,6 +16,8 @@ function App() {
   const [database, setDatabase] = useState({});
   const [loading, setLoading] = useState(false);
   const [context, setContext] = useState({});
+
+  const { getMessage } = useIntl();
 
   const gistSetter = (gistId, filename, token, dataSetter) => async (data) => {
     const updateData = await setData(data, gistId, filename, token);
@@ -30,7 +33,7 @@ function App() {
     getData(gistId, filename).then(data => {
       setDatabase(data);
       setLoading(false);
-      if(settings) {
+      if (settings) {
         setSettings(false);
       }
     })
@@ -38,7 +41,6 @@ function App() {
   }
 
   useEffect(initContext, []);
-
 
   return (
     <DataContext.Provider value={{ ...context, database }}>
@@ -48,14 +50,14 @@ function App() {
             <div className="px-40 flex flex-1 justify-center">
               <div className="layout-content-container flex flex-col w-[512px] max-w-[512px] flex-1">
                 <div className="flex justify-between gap-3 p-4 items-center">
-                  <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Manhua Check</p>
+                  <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">{getMessage('APP_NAME')}</p>
                   {
                     !loading
                       ? <Cog className='hover:text-[#e1e243] size-6 text-white cursor-pointer' onClick={() => setSettings(state => !state)} />
                       : <Spinner className='animate-spin size-6 text-white cursor-pointer' />
                   }
                 </div>
-                <GistSettings open={settings} onSubmit={initContext} loading={loading}/>
+                <GistSettings open={settings} onSubmit={initContext} loading={loading} />
                 <ManhuaList />
               </div>
             </div>

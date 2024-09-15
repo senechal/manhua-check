@@ -1,0 +1,58 @@
+{
+  "APP_NAME": {
+    "message": "Manhua Tracker",
+    "description": "Extension's name."
+  },
+  "APP_DESC": {
+    "message": "Effortlessly track and sync your manga/manhua reading progress across devices!",
+    "description": "Extension's one line description."
+  },
+  "NEW_TITLE": {
+    "message": "New Title",
+    "description": "New Title input placeholder"
+  },
+  "ADD_NEW": {
+    "message": "Add New",
+    "description": "Add New button text."
+  },
+  "SEARCH": {
+    "message": "Search",
+    "description": "Search input placeholder."
+  },
+  "CHAPTER": {
+    "message": "Chapter",
+    "description": "Chapter number prefix."
+  },
+  "SOURCE": {
+    "message": "Source",
+    "description": "Source input placeholder"
+  },
+  "ACTIVE": {
+    "message": "Active",
+    "description": "Active toggle label"
+  },
+  "REMOVE": {
+    "message": "Remove ?",
+    "description": "Remove button text."
+  },
+  "SAVE": {
+    "message": "Save",
+    "description": "Save button text."
+  },
+  "GIST_FILENAME": {
+    "message": "Gist Filename",
+    "description": "Gist Filename input placeholder."
+  },
+  "GIST_ID": {
+    "message": "Gist ID",
+    "description": "Gist ID input placeholder."
+  },
+  "GITHUB_PERSONAL_TOKEN": {
+    "message": "Github Personal Token",
+    "description": "Github Personal Token input placeholder."
+  },
+  "TAB_TITLES": {
+    "message": "$1 list:",
+    "description": "Local Titles list header."
+  }
+}
