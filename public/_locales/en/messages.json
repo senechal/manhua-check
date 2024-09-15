@@ -23,6 +23,10 @@
     "message": "Chapter",
     "description": "Chapter number prefix."
   },
+  "SOURCE": {
+    "message": "Source",
+    "description": "Source input placeholder"
+  },
   "ACTIVE": {
     "message": "Active",
     "description": "Active toggle label"
@@ -45,6 +49,10 @@
   },
   "GITHUB_PERSONAL_TOKEN": {
     "message": "Github Personal Token",
-    "description": "Github Personal Token input placeholder.."
+    "description": "Github Personal Token input placeholder."
+  },
+  "TAB_TITLES": {
+    "message": "$1 list:",
+    "description": "Local Titles list header."
   }
 }
