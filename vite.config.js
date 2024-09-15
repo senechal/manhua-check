@@ -10,6 +10,10 @@ export default defineConfig({
         {
           src: 'public/manifest.json',
           dest: '.',
+        },
+        {
+          src: 'public/_locales',
+          dest:'.'
         }
       ],
     }),
